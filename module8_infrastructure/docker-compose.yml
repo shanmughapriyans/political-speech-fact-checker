@@ -1,0 +1,157 @@
+# docker-compose.yml  —  Module 8: Full system orchestration
+#
+# Services:
+#   postgres     — local PostgreSQL for development (replace with Neon in prod)
+#   module1      — Speech ASR WebSocket server
+#   module2      — Claim Detection pipeline
+#   module3      — Query Formulation server
+#   module4      — Evidence Retrieval server
+#   module5      — RAG Verification server
+#   module6      — Verdict Resolution server
+#   module7      — Next.js dashboard
+#
+# Usage:
+#   docker compose up              # start everything
+#   docker compose up module7      # start only the dashboard (needs ports open)
+#   docker compose logs -f module2 # tail logs for one service
+
+version: "3.9"
+
+networks:
+  factcheck:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  whisper_models:
+  hf_cache:
+
+x-python-base: &python-base
+  build:
+    context: .
+    dockerfile: Dockerfile.python
+  environment:
+    - OPENAI_API_KEY=${OPENAI_API_KEY}
+    - HF_TOKEN=${HF_TOKEN}
+    - DATABASE_URL=postgresql://factcheck:factcheck@postgres:5432/factcheck
+    - HF_HOME=/cache/huggingface
+    - WHISPER_CACHE=/cache/whisper
+  volumes:
+    - hf_cache:/cache/huggingface
+    - whisper_models:/cache/whisper
+  networks:
+    - factcheck
+  restart: unless-stopped
+
+services:
+  # --- PostgreSQL ---
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: factcheck
+      POSTGRES_PASSWORD: factcheck
+      POSTGRES_DB: factcheck
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - factcheck
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U factcheck"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # --- Module 1: ASR ---
+  module1:
+    <<: *python-base
+    working_dir: /app/module1_speech_asr
+    command: python server.py --input mic
+    ports:
+      - "8765:8765"
+    devices:
+      - /dev/snd:/dev/snd     # microphone access (Linux)
+    profiles:
+      - full
+      - asr
+
+  # --- Module 2: Claim Detection ---
+  module2:
+    <<: *python-base
+    working_dir: /app/module2_claim_detection
+    command: python pipeline.py --m1-uri ws://module1:8765 --port 8766
+    ports:
+      - "8766:8766"
+    depends_on:
+      - module1
+    profiles:
+      - full
+
+  # --- Module 3: Query Formulation ---
+  module3:
+    <<: *python-base
+    working_dir: /app/module3_query_formulation
+    command: python server.py --m2-uri ws://module2:8766 --port 8767
+    ports:
+      - "8767:8767"
+    depends_on:
+      - module2
+    profiles:
+      - full
+
+  # --- Module 4: Evidence Retrieval ---
+  module4:
+    <<: *python-base
+    working_dir: /app/module4_evidence_retrieval
+    command: python server.py --m3-uri ws://module3:8767 --port 8768
+    ports:
+      - "8768:8768"
+    depends_on:
+      - module3
+    profiles:
+      - full
+
+  # --- Module 5: RAG Verification ---
+  module5:
+    <<: *python-base
+    working_dir: /app/module5_rag_verification
+    command: python server.py --m4-uri ws://module4:8768 --port 8769
+    ports:
+      - "8769:8769"
+    depends_on:
+      - module4
+    profiles:
+      - full
+
+  # --- Module 6: Verdict Resolution ---
+  module6:
+    <<: *python-base
+    working_dir: /app/module6_verdict_resolution
+    command: python server.py --m5-uri ws://module5:8769 --port 8770
+    ports:
+      - "8770:8770"
+    depends_on:
+      - module5
+    profiles:
+      - full
+
+  # --- Module 7: Next.js Dashboard ---
+  module7:
+    build:
+      context: ./module7_dashboard
+      dockerfile: ../Dockerfile.node
+    environment:
+      - M6_WS_URI=ws://module6:8770
+      - M1_WS_URI=ws://module1:8765
+    ports:
+      - "3000:3000"
+    depends_on:
+      - module6
+    networks:
+      - factcheck
+    restart: unless-stopped
+    profiles:
+      - full
+      - dashboard
+

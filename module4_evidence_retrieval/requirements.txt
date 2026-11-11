@@ -1,0 +1,5 @@
+faiss-cpu>=1.7
+sentence-transformers>=2.6
+websockets>=12.0
+python-dotenv>=1.0
+

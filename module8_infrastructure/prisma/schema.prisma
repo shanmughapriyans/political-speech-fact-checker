@@ -1,0 +1,171 @@
+// prisma/schema.prisma  —  Module 8: Full database schema
+// All modules write to / read from this schema via Prisma Client.
+// Database: PostgreSQL (Neon serverless or local Docker instance)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Claims — from Module 2
+// ---------------------------------------------------------------------------
+
+model Claim {
+  id               Int      @id @default(autoincrement())
+  claimId          Int      @unique @map("claim_id")          // Module 2 claim_id
+  text             String
+  context          String   @default("")
+  speaker          String   @default("UNKNOWN")
+  streamStart      Float    @map("stream_start")              // seconds
+  streamEnd        Float    @map("stream_end")
+  cfsScore         Float    @map("cfs_score")                 // P(claim-worthy)
+  sourceSegmentIds Int[]    @map("source_segment_ids")
+  emittedAt        DateTime @map("emitted_at")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  // Relations
+  subQuestions  SubQuestion[]
+  evidenceBundles EvidenceBundle[]
+  verdict       Verdict?
+
+  @@map("claims")
+}
+
+// ---------------------------------------------------------------------------
+// Sub-questions — from Module 3
+// ---------------------------------------------------------------------------
+
+model SubQuestion {
+  id          Int     @id @default(autoincrement())
+  setId       Int     @map("set_id")
+  claimId     Int     @map("claim_id")
+  qId         Int     @map("q_id")
+  text        String
+  searchQuery String  @map("search_query")
+  dependsOn   Int[]   @map("depends_on")
+  category    String  @default("numeric")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  claim Claim @relation(fields: [claimId], references: [claimId])
+
+  @@map("sub_questions")
+}
+
+// ---------------------------------------------------------------------------
+// Evidence bundles & passages — from Module 4
+// ---------------------------------------------------------------------------
+
+model EvidenceBundle {
+  id        Int      @id @default(autoincrement())
+  bundleId  Int      @unique @map("bundle_id")
+  claimId   Int      @map("claim_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  claim    Claim             @relation(fields: [claimId], references: [claimId])
+  passages EvidencePassage[]
+
+  @@map("evidence_bundles")
+}
+
+model EvidencePassage {
+  id               Int    @id @default(autoincrement())
+  passageId        String @map("passage_id")
+  bundleId         Int    @map("bundle_id")
+  questionQId      Int    @map("question_q_id")
+  text             String
+  sourceName       String @map("source_name")
+  sourceUrl        String @map("source_url")
+  sourceTier       Int    @map("source_tier")
+  credibilityScore Float  @map("credibility_score")
+  retrievalScore   Float  @map("retrieval_score")
+
+  bundle EvidenceBundle @relation(fields: [bundleId], references: [bundleId])
+
+  @@map("evidence_passages")
+}
+
+// ---------------------------------------------------------------------------
+// Sub-verdicts & final verdict — from Modules 5 & 6
+// ---------------------------------------------------------------------------
+
+model SubVerdict {
+  id                   Int      @id @default(autoincrement())
+  claimId              Int      @map("claim_id")
+  qId                  Int      @map("q_id")
+  question             String
+  answer               String
+  label                String   // "supported" | "refuted" | "not_enough_info"
+  confidence           Float
+  entailmentScore      Float    @map("entailment_score")
+  supportingPassageIds String[] @map("supporting_passage_ids")
+  reasoning            String
+  createdAt            DateTime @default(now()) @map("created_at")
+
+  verdict Verdict? @relation(fields: [verdictId], references: [id])
+  verdictId Int? @map("verdict_id")
+
+  @@map("sub_verdicts")
+}
+
+model Verdict {
+  id                     Int      @id @default(autoincrement())
+  verdictId              Int      @unique @map("verdict_id")
+  claimId                Int      @unique @map("claim_id")
+  label                  String   // "supported" | "refuted" | "mixed" | "not_enough_info"
+  confidence             Float
+  explanation            String
+  conflictsDetected      Boolean  @default(false) @map("conflicts_detected")
+  conflictResolutionNote String?  @map("conflict_resolution_note")
+  emittedAt              DateTime @map("emitted_at")
+  createdAt              DateTime @default(now()) @map("created_at")
+
+  claim       Claim        @relation(fields: [claimId], references: [claimId])
+  subVerdicts SubVerdict[]
+  evidenceItems EvidenceItem[]
+  auditLogs   AuditLog[]
+
+  @@map("verdicts")
+}
+
+// ---------------------------------------------------------------------------
+// Evidence items (UI-facing summary) — from Module 6
+// ---------------------------------------------------------------------------
+
+model EvidenceItem {
+  id        Int     @id @default(autoincrement())
+  verdictId Int     @map("verdict_id")
+  source    String
+  url       String  @default("")
+  snippet   String
+  supports  Boolean
+
+  verdict Verdict @relation(fields: [verdictId], references: [verdictId])
+
+  @@map("evidence_items")
+}
+
+// ---------------------------------------------------------------------------
+// Audit log — append-only event log for every module's output
+// ---------------------------------------------------------------------------
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  claimId   Int?     @map("claim_id")
+  verdictId Int?     @map("verdict_id")
+  module    String   // "module1" … "module6"
+  event     String   // "claim_detected", "verdict_emitted", etc.
+  payload   Json     // full JSON payload for replay/debugging
+  createdAt DateTime @default(now()) @map("created_at")
+
+  verdict Verdict? @relation(fields: [verdictId], references: [verdictId])
+
+  @@index([claimId])
+  @@index([createdAt])
+  @@map("audit_log")
+}
+

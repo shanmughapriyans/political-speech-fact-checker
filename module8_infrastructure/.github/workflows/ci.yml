@@ -1,0 +1,127 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ----------------------------------------------------------------
+  # Python tests — all modules
+  # ----------------------------------------------------------------
+  python-tests:
+    name: Python tests (Module 1–6)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install common Python dependencies
+        run: |
+          pip install pytest pysbd scikit-learn joblib sentence-transformers \
+            torch --index-url https://download.pytorch.org/whl/cpu \
+            transformers openai pydantic python-dotenv websockets
+
+      - name: Module 2 — sentence segmenter tests
+        working-directory: module2_claim_detection
+        run: python sentence_segmenter.py
+
+      - name: Module 2 — deduper tests
+        working-directory: module2_claim_detection
+        run: python deduper.py
+
+      - name: Module 2 — claim classifier self-test
+        working-directory: module2_claim_detection
+        env:
+          SENTENCE_TRANSFORMERS_HOME: /tmp/st_cache
+        run: python claim_classifier.py --selftest
+
+      - name: Module 3 — decomposer self-test (heuristic mode)
+        working-directory: module3_query_formulation
+        run: python decomposer.py
+
+      - name: Module 4 — retriever self-test (BM25 only)
+        working-directory: module4_evidence_retrieval
+        run: python retriever.py
+
+      - name: Module 5 — NLI scorer self-test (heuristic mode)
+        working-directory: module5_rag_verification
+        run: python nli_scorer.py
+
+      - name: Module 5 — RAG verifier self-test
+        working-directory: module5_rag_verification
+        run: python rag_verifier.py
+
+      - name: Module 6 — resolver self-test
+        working-directory: module6_verdict_resolution
+        run: python resolver.py
+
+  # ----------------------------------------------------------------
+  # Next.js build
+  # ----------------------------------------------------------------
+  nextjs-build:
+    name: Next.js build (Module 7)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: module7_dashboard
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: module7_dashboard/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+        env:
+          M6_WS_URI: ws://localhost:8770
+          M1_WS_URI: ws://localhost:8765
+
+  # ----------------------------------------------------------------
+  # End-to-end evaluation (offline — no live audio)
+  # ----------------------------------------------------------------
+  e2e-eval:
+    name: End-to-end evaluation (offline fixture)
+    runs-on: ubuntu-latest
+    needs: python-tests
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install scikit-learn joblib sentence-transformers pysbd \
+            torch --index-url https://download.pytorch.org/whl/cpu \
+            transformers
+
+      - name: Generate fixture
+        working-directory: module2_claim_detection
+        run: python dump_segments.py --source synthetic --out data/sample_recording.jsonl
+
+      - name: Run offline evaluation
+        working-directory: module2_claim_detection
+        env:
+          SENTENCE_TRANSFORMERS_HOME: /tmp/st_cache
+        run: python replay.py --evaluate --speed 0
+
+      - name: Run module8 end-to-end harness
+        run: python module8_infrastructure/eval/end_to_end_eval.py
+

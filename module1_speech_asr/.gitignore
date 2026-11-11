@@ -1,0 +1,20 @@
+# Virtual environment
+venv/
+.venv/
+
+# Token / secrets — NEVER commit this
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# faster-whisper model cache (downloaded on first run)
+# Usually stored in ~/.cache/huggingface/
+# Add your local cache path here if you redirect it
+
+# Test artifacts
+*.wav
+*.tmp

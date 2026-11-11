@@ -1,0 +1,30 @@
+Baseline Classifier Results
+============================================================
+Model  : LogisticRegression  C=1.0  class_weight=balanced
+Split  : temporal by debate year
+Train  : up to 2012   Val: 2016   Test: groundtruth.csv
+
+TRAIN
+  Precision: 0.9662
+  Recall   : 0.9998
+  F1 (CFS) : 0.9827
+  Confusion matrix:
+[[14907   164]
+ [    1  4684]]
+
+VALIDATION (2016 debates)
+  Precision: 0.6970
+  Recall   : 0.4739
+  F1 (CFS) : 0.5642
+  Confusion matrix:
+[[1867  150]
+ [ 383  345]]
+
+TEST (groundtruth expert labels)
+  Precision: 0.8446
+  Recall   : 0.8908
+  F1 (CFS) : 0.8671
+  Confusion matrix:
+[[755  39]
+ [ 26 212]]
+

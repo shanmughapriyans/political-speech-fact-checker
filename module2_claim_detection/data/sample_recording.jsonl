@@ -1,0 +1,40 @@
+{"id": 0, "start": 0.0, "end": 2.1, "speaker": "SPEAKER_00", "is_final": true, "text": "Thank you all for being here today.", "label": 0, "emitted_at": 1793864451.0634296}
+{"id": 1, "start": 2.2, "end": 4.6, "speaker": "SPEAKER_00", "is_final": true, "text": "It is a great honour to address this chamber.", "label": 0, "emitted_at": 1793864451.0634918}
+{"id": 2, "start": 4.8, "end": 8.3, "speaker": "SPEAKER_00", "is_final": true, "text": "Unemployment has fallen to 3.8 percent, the lowest in a decade.", "label": 1, "emitted_at": 1793864451.0635128}
+{"id": 3, "start": 8.4, "end": 10.1, "speaker": "SPEAKER_00", "is_final": true, "text": "Our GDP grew by", "label": 0, "emitted_at": 1793864451.0635238}
+{"id": 4, "start": 10.2, "end": 13.0, "speaker": "SPEAKER_00", "is_final": true, "text": "2.1 percent last quarter.", "label": 1, "emitted_at": 1793864451.0635319}
+{"id": 5, "start": 13.1, "end": 17.4, "speaker": "SPEAKER_00", "is_final": true, "text": "We have added 450,000 jobs in the manufacturing sector since 2021.", "label": 1, "emitted_at": 1793864451.0635397}
+{"id": 6, "start": 17.5, "end": 20.0, "speaker": "SPEAKER_00", "is_final": true, "text": "I want to be very clear about what we stand for.", "label": 0, "emitted_at": 1793864451.0635474}
+{"id": 7, "start": 20.1, "end": 23.5, "speaker": "SPEAKER_00", "is_final": true, "text": "Every child in this country deserves a quality education.", "label": 0, "emitted_at": 1793864451.0635548}
+{"id": 8, "start": 23.6, "end": 27.9, "speaker": "SPEAKER_00", "is_final": true, "text": "We have invested $4.2 billion in public schools over the past three years.", "label": 1, "emitted_at": 1793864451.0635617}
+{"id": 9, "start": 28.0, "end": 32.1, "speaker": "SPEAKER_00", "is_final": true, "text": "Test scores have risen by 12 points on average since our reforms began.", "label": 1, "emitted_at": 1793864451.0635726}
+{"id": 10, "start": 32.2, "end": 35.0, "speaker": "SPEAKER_00", "is_final": true, "text": "What kind of future do we want for our children?", "label": 0, "emitted_at": 1793864451.0635798}
+{"id": 11, "start": 35.1, "end": 39.4, "speaker": "SPEAKER_00", "is_final": true, "text": "Infant mortality has dropped by 18 percent since 2019.", "label": 1, "emitted_at": 1793864451.0635872}
+{"id": 12, "start": 39.5, "end": 42.0, "speaker": "SPEAKER_00", "is_final": true, "text": "Let me turn now to the economy.", "label": 0, "emitted_at": 1793864451.0635943}
+{"id": 13, "start": 42.1, "end": 46.8, "speaker": "SPEAKER_00", "is_final": true, "text": "Inflation is down to 2.4 percent, below the OECD average of 3.1 percent.", "label": 1, "emitted_at": 1793864451.0636008}
+{"id": 14, "start": 46.9, "end": 50.5, "speaker": "SPEAKER_00", "is_final": true, "text": "I met a nurse last week who told me she finally feels secure.", "label": 0, "emitted_at": 1793864451.0636082}
+{"id": 15, "start": 50.6, "end": 55.2, "speaker": "SPEAKER_00", "is_final": true, "text": "Healthcare spending per capita is now $3,800, up from $3,100 in 2020.", "label": 1, "emitted_at": 1793864451.063615}
+{"id": 16, "start": 55.3, "end": 58.0, "speaker": "SPEAKER_00", "is_final": true, "text": "We believe everyone deserves access to affordable housing.", "label": 0, "emitted_at": 1793864451.063622}
+{"id": 17, "start": 58.1, "end": 62.5, "speaker": "SPEAKER_00", "is_final": true, "text": "We built 120,000 new affordable units last year, more than any U.S. state.", "label": 1, "emitted_at": 1793864451.063629}
+{"id": 18, "start": 62.6, "end": 64.9, "speaker": "SPEAKER_00", "is_final": true, "text": "These are real achievements.", "label": 0, "emitted_at": 1793864451.0636363}
+{"id": 19, "start": 65.0, "end": 69.3, "speaker": "SPEAKER_01", "is_final": true, "text": "With respect, the government's record is far less impressive.", "label": 0, "emitted_at": 1793864451.0636432}
+{"id": 20, "start": 69.4, "end": 74.0, "speaker": "SPEAKER_01", "is_final": true, "text": "In reality, real wages have fallen by 4.7 percent over the same period.", "label": 1, "emitted_at": 1793864451.06365}
+{"id": 21, "start": 74.1, "end": 78.8, "speaker": "SPEAKER_01", "is_final": true, "text": "Food bank usage has tripled since 2021, reaching a record 2.3 million visits.", "label": 1, "emitted_at": 1793864451.0636563}
+{"id": 22, "start": 78.9, "end": 81.5, "speaker": "SPEAKER_01", "is_final": true, "text": "That is not the record of a government that cares about working people.", "label": 0, "emitted_at": 1793864451.0636637}
+{"id": 23, "start": 81.6, "end": 86.0, "speaker": "SPEAKER_01", "is_final": true, "text": "NHS waiting lists stand at a record high of 7.6 million patients.", "label": 1, "emitted_at": 1793864451.0636735}
+{"id": 24, "start": 86.1, "end": 88.5, "speaker": "SPEAKER_01", "is_final": true, "text": "I could go on, but time does not permit.", "label": 0, "emitted_at": 1793864451.0636802}
+{"id": 25, "start": 88.6, "end": 93.0, "speaker": "SPEAKER_01", "is_final": true, "text": "Carbon emissions rose by 2.9 percent last year, reversing a decade of progress.", "label": 1, "emitted_at": 1793864451.063687}
+{"id": 26, "start": 93.1, "end": 95.5, "speaker": "SPEAKER_01", "is_final": true, "text": "We owe it to future generations to do better.", "label": 0, "emitted_at": 1793864451.063694}
+{"id": 27, "start": 95.6, "end": 102.0, "speaker": "SPEAKER_00", "is_final": true, "text": "Our renewable energy capacity has doubled. Solar installations grew by 34 percent.", "label": 1, "emitted_at": 1793864451.063701}
+{"id": 28, "start": 102.1, "end": 107.5, "speaker": "SPEAKER_00", "is_final": true, "text": "Exports reached a record $580 billion, a 9.2 percent increase year-on-year.", "label": 1, "emitted_at": 1793864451.0637078}
+{"id": 29, "start": 107.6, "end": 110.0, "speaker": "SPEAKER_00", "is_final": true, "text": "We are proud of this record.", "label": 0, "emitted_at": 1793864451.0637178}
+{"id": 30, "start": 110.1, "end": 115.3, "speaker": "SPEAKER_00", "is_final": true, "text": "Violent crime is down 15 percent compared with five years ago.", "label": 1, "emitted_at": 1793864451.0637248}
+{"id": 31, "start": 115.4, "end": 118.0, "speaker": "SPEAKER_00", "is_final": true, "text": "Safe streets are the foundation of a good society.", "label": 0, "emitted_at": 1793864451.063732}
+{"id": 32, "start": 118.1, "end": 123.4, "speaker": "SPEAKER_00", "is_final": true, "text": "Defense spending has reached 2.1 percent of GDP, meeting our NATO commitment.", "label": 1, "emitted_at": 1793864451.0637388}
+{"id": 33, "start": 123.5, "end": 126.5, "speaker": "SPEAKER_01", "is_final": true, "text": "That increase came at the expense of social services.", "label": 0, "emitted_at": 1793864451.063746}
+{"id": 34, "start": 126.6, "end": 131.0, "speaker": "SPEAKER_01", "is_final": true, "text": "Child poverty has increased to 24 percent, up from 19 percent in 2020.", "label": 1, "emitted_at": 1793864451.0637534}
+{"id": 35, "start": 131.1, "end": 133.5, "speaker": "SPEAKER_01", "is_final": true, "text": "That is a moral failure.", "label": 0, "emitted_at": 1793864451.0637603}
+{"id": 36, "start": 133.6, "end": 138.0, "speaker": "SPEAKER_01", "is_final": true, "text": "National debt has grown to 102 percent of GDP under this government.", "label": 1, "emitted_at": 1793864451.0637672}
+{"id": 37, "start": 138.1, "end": 140.5, "speaker": "SPEAKER_00", "is_final": true, "text": "The honourable member is entitled to her view.", "label": 0, "emitted_at": 1793864451.0637739}
+{"id": 38, "start": 140.6, "end": 145.0, "speaker": "SPEAKER_00", "is_final": true, "text": "Productivity growth has averaged 1.8 percent annually over the past four years.", "label": 1, "emitted_at": 1793864451.063781}
+{"id": 39, "start": 145.1, "end": 148.0, "speaker": "SPEAKER_00", "is_final": true, "text": "Thank you, Mr Speaker.", "label": 0, "emitted_at": 1793864451.063788}

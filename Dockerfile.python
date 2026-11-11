@@ -1,0 +1,35 @@
+# Dockerfile.python  —  shared base for all Python microservices
+FROM python:3.11-slim
+
+# System deps (audio libs for Module 1)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg libsndfile1 portaudio19-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy all module source (each service overrides working_dir in compose)
+COPY module1_speech_asr/     /app/module1_speech_asr/
+COPY module2_claim_detection/ /app/module2_claim_detection/
+COPY module3_query_formulation/ /app/module3_query_formulation/
+COPY module4_evidence_retrieval/ /app/module4_evidence_retrieval/
+COPY module5_rag_verification/  /app/module5_rag_verification/
+COPY module6_verdict_resolution/ /app/module6_verdict_resolution/
+
+# Install dependencies for all modules
+RUN pip install --no-cache-dir \
+    # Module 1
+    faster-whisper pyannote.audio websockets sounddevice soundfile \
+    # Module 2
+    pysbd scikit-learn joblib sentence-transformers torch \
+    transformers datasets \
+    # Module 3-6
+    openai pydantic python-dotenv \
+    # Module 4
+    faiss-cpu \
+    # Module 5
+    # (transformers already installed above) \
+    && true
+
+ENV PYTHONUNBUFFERED=1
+

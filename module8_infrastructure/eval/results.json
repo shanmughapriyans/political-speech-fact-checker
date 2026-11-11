@@ -1,0 +1,57 @@
+{
+  "dm_precision": 0.9524,
+  "dm_recall": 0.9524,
+  "dm_f1": 0.9524,
+  "verdict_accuracy": 0.0476,
+  "n_verdicts": 21,
+  "latency": {
+    "Module 2 (classify+dedup)": {
+      "name": "Module 2 (classify+dedup)",
+      "n": 21,
+      "median": 29.7,
+      "p95": 36.8,
+      "p99": 12938.78,
+      "mean": 644.38
+    },
+    "Module 3 (decompose)": {
+      "name": "Module 3 (decompose)",
+      "n": 21,
+      "median": 0.05,
+      "p95": 0.09,
+      "p99": 0.09,
+      "mean": 0.05
+    },
+    "Module 4 (retrieve)": {
+      "name": "Module 4 (retrieve)",
+      "n": 21,
+      "median": 1.57,
+      "p95": 3.08,
+      "p99": 3.59,
+      "mean": 1.77
+    },
+    "Module 5 (verify)": {
+      "name": "Module 5 (verify)",
+      "n": 21,
+      "median": 1255.28,
+      "p95": 1552.69,
+      "p99": 1621.44,
+      "mean": 1227.99
+    },
+    "Module 6 (resolve)": {
+      "name": "Module 6 (resolve)",
+      "n": 21,
+      "median": 0.11,
+      "p95": 0.15,
+      "p99": 0.16,
+      "mean": 0.11
+    },
+    "End-to-end (claim\u2192verdict)": {
+      "name": "End-to-end (claim\u2192verdict)",
+      "n": 21,
+      "median": 1259.07,
+      "p95": 1554.61,
+      "p99": 1622.91,
+      "mean": 1229.94
+    }
+  }
+}
