@@ -68,22 +68,23 @@ DIARIZATION_INTERVAL_S: float = 4.0   # seconds
 
 # faster-whisper model size.
 # Options: "tiny", "base", "small", "medium", "large-v2", "large-v3"
-# "small" is a good starting point for real-time use on a modern GPU.
-WHISPER_MODEL_SIZE: str = "small"
+# "base" is ~3x faster than "small" on CPU with minimal accuracy loss.
+# Switch to "small" or "medium" only if you have a GPU.
+WHISPER_MODEL_SIZE: str = "base"
 
 # Compute backend for faster-whisper.
 # "cpu" for CPU-only. Change to "cuda" if you have an NVIDIA GPU with CUDA installed.
 WHISPER_DEVICE: str = "cpu"
 
-# CTranslate2 quantisation.  "int8" is fastest; "float16" if you need
-# extra accuracy on GPU; "float32" for CPU without int8 support.
+# CTranslate2 quantisation.  "int8" is fastest on CPU; "float16" for GPU.
 WHISPER_COMPUTE_TYPE: str = "int8"
 
 # Language hint fed to Whisper.  None → auto-detect (slower first chunk).
 WHISPER_LANGUAGE: str | None = "en"
 
-# Beam size used during decoding.  Larger = more accurate, slower.
-WHISPER_BEAM_SIZE: int = 5
+# Beam size used during decoding.  1 = greedy (fastest), 5 = most accurate.
+# On CPU, beam_size=1 is ~2x faster than beam_size=5 with minor accuracy loss.
+WHISPER_BEAM_SIZE: int = 1
 
 # pyannote.audio diarization pipeline model identifier on Hugging Face.
 DIARIZATION_MODEL: str = "pyannote/speaker-diarization-3.1"
